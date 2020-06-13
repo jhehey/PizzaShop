@@ -29,10 +29,10 @@ namespace PizzaShop.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<AccountDto>>> GetAccounts ()
+        public async Task<ActionResult<IEnumerable<AccountDto>>> GetAccounts ()
         {
-            var accounts = await Accounts.Select (a => mapper.Map<AccountDto> (a)).ToListAsync ();
-            return Ok (accounts);
+            var accounts = await Accounts.ToListAsync ();
+            return Ok (mapper.Map<IEnumerable<AccountDto>> (accounts));
         }
 
         [HttpGet ("{id}")]

@@ -21,7 +21,7 @@ namespace PizzaShop.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<Product>>> GetProducts ()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts ()
         {
             var products = await context.Products.ToListAsync ();
             return Ok (products);

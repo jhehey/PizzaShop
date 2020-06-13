@@ -17,6 +17,6 @@ namespace PizzaShop.Entities
         public Account Account { get; set; }
         public long AccountId { get; set; }
 
-        public ICollection<Product> Products { get; set; } = new List<Product> ();
+        public IEnumerable<Product> Products { get; set; } = new List<Product> ();
     }
 }
