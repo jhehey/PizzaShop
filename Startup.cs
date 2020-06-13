@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PizzaShop.Contexts;
 
 namespace PizzaShop
 {
@@ -24,6 +29,8 @@ namespace PizzaShop
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices (IServiceCollection services)
         {
+            services.AddDbContextPool<PizzaShopDbContext> (opt => opt.UseInMemoryDatabase ("PizzaShop"));
+            services.AddAutoMapper (AppDomain.CurrentDomain.GetAssemblies ());
             services.AddControllers ();
         }
 
@@ -33,6 +40,18 @@ namespace PizzaShop
             if (env.IsDevelopment ())
             {
                 app.UseDeveloperExceptionPage ();
+            }
+            else
+            {
+                app.UseExceptionHandler (a => a.Run (async context =>
+                {
+                    var feature = context.Features.Get<IExceptionHandlerPathFeature> ();
+                    var exception = feature.Error;
+
+                    var result = JsonSerializer.Serialize (new { error = exception.Message });
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync (result);
+                }));
             }
 
             app.UseHttpsRedirection ();

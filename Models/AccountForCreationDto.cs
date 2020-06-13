@@ -1,20 +1,25 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace PizzaShop.Entities
+namespace PizzaShop.Models
 {
-    public class Account
+    public class AccountForCreationDto
     {
-        [Key]
-        [DatabaseGenerated (DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        [Required]
         public string Username { get; set; }
+
+        [Required]
         public string PasswordHash { get; set; }
+
+        [Required]
         public string FirstName { get; set; }
+
+        [Required]
         public string LastName { get; set; }
+
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+
+        [Phone]
         public string ContactNumber { get; set; }
-        public DateTime RegistrationDate { get; set; }
     }
 }
