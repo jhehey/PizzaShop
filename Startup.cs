@@ -31,7 +31,9 @@ namespace PizzaShop
         {
             services.AddDbContextPool<PizzaShopDbContext> (opt => opt.UseInMemoryDatabase ("PizzaShop"));
             services.AddAutoMapper (AppDomain.CurrentDomain.GetAssemblies ());
-            services.AddControllers ();
+            services.AddControllers (
+                setupAction => { setupAction.ReturnHttpNotAcceptable = true; }
+            ).AddXmlDataContractSerializerFormatters ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
